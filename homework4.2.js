@@ -1,5 +1,6 @@
 let i = prompt('Enter any value');
 let bool = i.toLowerCase();
+
 if (isNaN(i)){
     if (bool === 'true' || bool === 'false'){
         console.log('You entered a boolean');

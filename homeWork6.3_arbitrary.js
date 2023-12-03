@@ -1,4 +1,4 @@
-function convertToDecimal(numberString, base, isNegative) {
+function convertToDecimal(numberString, base, isNegative, hasFraction) {
     const validDigits = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ'.slice(0, base);
 
     function charToDigit(char) {
@@ -12,6 +12,8 @@ function convertToDecimal(numberString, base, isNegative) {
 
     let decimalNumber = 0;
     let decimalFactor = 1;
+    let isFractionPart = false;
+    let fractionFactor = 1;
 
     for (let i = numberString.length - 1; i >= 0; i--) {
         const char = numberString[i].toUpperCase();
@@ -21,11 +23,21 @@ function convertToDecimal(numberString, base, isNegative) {
             continue;
         }
 
+        if (char === '.' && !isFractionPart) {
+            isFractionPart = true;
+            continue;
+        }
+
         const digitValue = charToDigit(char);
 
         if (digitValue >= 0 && digitValue < base) {
-            decimalNumber += digitValue * decimalFactor;
-            decimalFactor *= base;
+            if (isFractionPart) {
+                decimalNumber += digitValue / fractionFactor;
+                fractionFactor *= base;
+            } else {
+                decimalNumber += digitValue * decimalFactor;
+                decimalFactor *= base;
+            }
         } else {
             decimalNumber = NaN;
             break;
@@ -38,6 +50,7 @@ function convertToDecimal(numberString, base, isNegative) {
 const numberString = prompt("Enter a number:");
 const base = parseInt(prompt("Enter the base of the number system:"), 10);
 let isNegative = false;
+let hasFraction = false;
 
-const result = convertToDecimal(numberString, base, isNegative);
+const result = convertToDecimal(numberString, base, isNegative, hasFraction);
 console.log(result);

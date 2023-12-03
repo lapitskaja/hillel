@@ -1,4 +1,4 @@
-function convertToDecimal(numberString, base) {
+function convertToDecimal(numberString, base, isNegative) {
     const validDigits = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ'.slice(0, base);
 
     function charToDigit(char) {
@@ -14,8 +14,14 @@ function convertToDecimal(numberString, base) {
     let decimalFactor = 1;
 
     for (let i = numberString.length - 1; i >= 0; i--) {
-        const digit = numberString[i].toUpperCase();
-        const digitValue = charToDigit(digit);
+        const char = numberString[i].toUpperCase();
+
+        if (char === '-' && i === 0) {
+            isNegative = true;
+            continue;
+        }
+
+        const digitValue = charToDigit(char);
 
         if (digitValue >= 0 && digitValue < base) {
             decimalNumber += digitValue * decimalFactor;
@@ -26,11 +32,12 @@ function convertToDecimal(numberString, base) {
         }
     }
 
-    return decimalNumber;
+    return isNegative ? -decimalNumber : decimalNumber;
 }
 
 const numberString = prompt("Enter a number:");
 const base = parseInt(prompt("Enter the base of the number system:"), 10);
+let isNegative = false;
 
-const result = convertToDecimal(numberString, base);
+const result = convertToDecimal(numberString, base, isNegative);
 console.log(result);

@@ -28,6 +28,11 @@ function convertToDecimal(numberString, base, isNegative, hasFraction) {
             continue;
         }
 
+        if (char === ',' && !isFractionPart) {
+            isFractionPart = true;
+            continue;
+        }
+
         const digitValue = charToDigit(char);
 
         if (digitValue >= 0 && digitValue < base) {
